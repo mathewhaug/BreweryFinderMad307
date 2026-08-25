@@ -1,0 +1,47 @@
+.brewery-card {
+  background-color: #f7f5f2;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+
+  h3 {
+    margin: 0 0 0.5rem;
+  }
+
+  p {
+    margin: 0.25rem 0;
+  }
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.badge-micro {
+  background-color: #2e7d32;
+}
+
+.badge-brewpub {
+  background-color: #7702ff;
+}
+
+.badge-large {
+  background-color: #c26a00;
+}
+
+.badge-default {
+  background-color: #616161;
+}
+
+.details {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}

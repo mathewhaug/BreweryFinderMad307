@@ -1,0 +1,31 @@
+<div class="brewery-card" (click)="toggle()">
+  <h3>{{ brewery().name }}</h3>
+
+  @switch (brewery().breweryType) {
+    @case ('micro') {
+      <span class="badge badge-micro">Micro Brewery</span>
+    }
+    @case ('brewpub') {
+      <span class="badge badge-brewpub">Brewpub</span>
+    }
+    @case ('large') {
+      <span class="badge badge-large">Large Brewery</span>
+    }
+    @default {
+      <span class="badge badge-default">{{ brewery().breweryType }}</span>
+    }
+  }
+
+  @if (brewery().hasFoodMenu) {
+    <p>Food menu available</p>
+  } @else {
+    <p>No food menu</p>
+  }
+
+  @if (expanded) {
+    <div class="details">
+      <p>City: {{ brewery().city }}</p>
+      <p>Type: {{ brewery().breweryType }}</p>
+    </div>
+  }
+</div>
