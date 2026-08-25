@@ -1,6 +1,6 @@
 <h2>Breweries</h2>
 
-@for (brewery of breweryList; track brewery.id) {
+@for (brewery of breweryList(); track brewery.id) {
   <app-brewery-card [brewery]="brewery" (opened)="onBreweryOpened($event)" />
 } @empty {
   <p>No breweries to show yet.</p>
