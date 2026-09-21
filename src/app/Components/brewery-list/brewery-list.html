@@ -1,0 +1,10 @@
+<h1>Brewery List</h1>
+
+<div class = "test">
+@for (breweries of breweryList ; track breweries.id) {
+  <app-brewery-card ></app-brewery-card>
+}
+@empty{
+  <p>No breweries to show</p>
+}
+</div>
