@@ -33,4 +33,10 @@ export class BreweryList {
       hasFoodMenu: true,
     },
   ];
+
+  // Let the parent component react to a card being opened
+  onBreweryOpened(brewery: Brewery): void {
+    //Place holder for now
+    console.warn("Opened: ", brewery.name )
+  }
 }

@@ -1,1 +1,20 @@
-<p>brewery-card works!</p>
+<div class="brewery-card" (click) = toggle()>
+  <h3>{{brewery().name}}</h3>
+  @switch (brewery().breweryType){
+    @case ('micro') { <span class="badge micro">Micro</span> }
+    @case ('brewpub') { <span class="brew pub"> Brewpub </span>}
+    @case ('large') { <span class="large">Large </span>}
+    @default { <span class ="badge">Other</span> }
+  }
+
+  @if (brewery().hasFoodMenu) {
+    <p>Food Menu Available</p>
+  } @else {
+    <p>No Food Available</p>
+  }
+  @if (expanded) {
+    <p>{{brewery().city}}</p>
+    <p>{{brewery().breweryType}}</p>
+  }
+
+</div>

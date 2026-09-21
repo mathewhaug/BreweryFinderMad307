@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { Brewery } from '../../shared/models/brewery';
 
 @Component({
@@ -8,5 +8,18 @@ import { Brewery } from '../../shared/models/brewery';
   templateUrl: './brewery-card.html',
 })
 export class BreweryCard {
+  //Two way data binding
   brewery = input.required<Brewery>();
+  //Boolean to track if the card was clicked on
+  expanded = false
+  opened = output<Brewery>()
+
+  toggle(): void {
+    this.expanded = !this.expanded
+    this.opened.emit(this.brewery())
+  }
+
+
+
+
 }

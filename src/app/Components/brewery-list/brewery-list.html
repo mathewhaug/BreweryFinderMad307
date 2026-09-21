@@ -1,8 +1,11 @@
 <h1>Brewery List</h1>
 
-<div class = "test">
+<div class = "brewery-list">
 @for (breweries of breweryList ; track breweries.id) {
-  <app-brewery-card ></app-brewery-card>
+  <app-brewery-card
+    [brewery]="breweries"
+    (opened) = "onBreweryOpened($event)"
+  ></app-brewery-card>
 }
 @empty{
   <p>No breweries to show</p>
