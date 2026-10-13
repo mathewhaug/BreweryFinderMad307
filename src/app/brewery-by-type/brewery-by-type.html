@@ -1,0 +1,12 @@
+<h2 class="heading">{{ type() }} breweries</h2>
+
+@for (brewery of breweries(); track brewery.id) {
+  <app-brewery-card
+    [brewery]="brewery"
+    [isFavourite]="breweryService.isFavourite(brewery.id)"
+    (favouriteToggled)="breweryService.toggleFavourite($event)"
+  />
+} @empty {
+  <p>No {{ type() }} breweries found.</p>
+  <a routerLink="/breweries">See all breweries</a>
+}

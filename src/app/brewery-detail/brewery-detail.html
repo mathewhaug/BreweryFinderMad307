@@ -1,0 +1,23 @@
+@if (brewery(); as b) {
+  <article class="detail">
+    <h2>{{ b.name }}</h2>
+    <p>City: {{ b.city }}</p>
+    <p>Type: {{ b.breweryType }}</p>
+    @if (b.hasFoodMenu) {
+      <p>Food menu available</p>
+    } @else {
+      <p>No food menu</p>
+    }
+
+    <button type="button" class="favourite-button" (click)="breweryService.toggleFavourite(b.id)">
+      {{ breweryService.isFavourite(b.id) ? '★ Remove from favourites' : '☆ Add to favourites' }}
+    </button>
+  </article>
+
+  <a routerLink="/breweries">Back to all breweries</a>
+} @else {
+  <!-- This is not the 404 page. The URL matched a route, breweries/:id,
+       but there is no data for that id. The ** route is only for URLs that match no route at all. -->
+  <p>No brewery with id {{ id() }}.</p>
+  <a routerLink="/breweries">Back to all breweries</a>
+}

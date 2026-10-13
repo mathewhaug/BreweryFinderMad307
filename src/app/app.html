@@ -1,4 +1,16 @@
 <div class="container">
   <h1>{{ title }}</h1>
-  <app-brewery-list />
+
+  <nav class="nav-bar">
+    <!-- exact: true stops "All breweries" from also being highlighted on /breweries/type/micro.
+         By default, routerLinkActive matches by prefix. -->
+    <a routerLink="/breweries" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">All breweries</a>
+    <a routerLink="/breweries/type/micro" routerLinkActive="active">Micro</a>
+    <a routerLink="/breweries/type/brewpub" routerLinkActive="active">Brewpub</a>
+    <a routerLink="/breweries/type/large" routerLinkActive="active">Large</a>
+    <a routerLink="/favourites" routerLinkActive="active">Favourites ({{ favouriteCount() }})</a>
+  </nav>
+
+  <!-- The page for the matched route is displayed here. -->
+  <router-outlet />
 </div>

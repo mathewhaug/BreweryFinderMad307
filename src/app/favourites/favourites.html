@@ -1,0 +1,12 @@
+<h2>Favourites</h2>
+
+@for (brewery of breweryService.favourites(); track brewery.id) {
+  <app-brewery-card
+    [brewery]="brewery"
+    [isFavourite]="true"
+    (favouriteToggled)="breweryService.toggleFavourite($event)"
+  />
+} @empty {
+  <p>No favourites yet.</p>
+  <a routerLink="/breweries">Browse all breweries</a>
+}

@@ -10,7 +10,7 @@ import { BreweryService } from '../services/brewery';
   templateUrl: './brewery-list.html',
 })
 export class BreweryList {
-  private breweryService = inject(BreweryService);
+  protected breweryService = inject(BreweryService);
 
   protected breweryList = this.breweryService.breweryList;
 

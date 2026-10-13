@@ -1,7 +1,12 @@
 <h2>Breweries</h2>
 
 @for (brewery of breweryList(); track brewery.id) {
-  <app-brewery-card [brewery]="brewery" (opened)="onBreweryOpened($event)" />
+  <app-brewery-card
+    [brewery]="brewery"
+    [isFavourite]="breweryService.isFavourite(brewery.id)"
+    (opened)="onBreweryOpened($event)"
+    (favouriteToggled)="breweryService.toggleFavourite($event)"
+  />
 } @empty {
   <p>No breweries to show yet.</p>
 }

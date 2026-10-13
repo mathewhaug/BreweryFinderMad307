@@ -1,5 +1,15 @@
-<div class="brewery-card" (click)="toggle()">
-  <h3>{{ brewery().name }}</h3>
+<div class="brewery-card" [class.favourite]="isFavourite()" (click)="toggle()">
+  <div class="card-header">
+    <h3>{{ brewery().name }}</h3>
+    <button
+      type="button"
+      class="favourite-button"
+      [attr.aria-label]="isFavourite() ? 'Remove ' + brewery().name + ' from favourites' : 'Add ' + brewery().name + ' to favourites'"
+      (click)="onFavouriteClick($event)"
+    >
+      {{ isFavourite() ? '★' : '☆' }}
+    </button>
+  </div>
 
   @switch (brewery().breweryType) {
     @case ('micro') {
@@ -28,4 +38,7 @@
       <p>Type: {{ brewery().breweryType }}</p>
     </div>
   }
+
+  <!-- The array form builds the URL from segments: ['/breweries', 3] becomes /breweries/3. -->
+  <a class="details-link" [routerLink]="['/breweries', brewery().id]" (click)="$event.stopPropagation()">View details</a>
 </div>
