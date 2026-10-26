@@ -12,6 +12,11 @@
     <button type="button" class="favourite-button" (click)="breweryService.toggleFavourite(b.id)">
       {{ breweryService.isFavourite(b.id) ? '★ Remove from favourites' : '☆ Add to favourites' }}
     </button>
+
+    <div class="actions">
+      <a [routerLink]="['/edit', b.id]">Edit</a>
+      <button type="button" class="delete-button" (click)="onDelete(b.id)">Delete</button>
+    </div>
   </article>
 
   <a routerLink="/breweries">Back to all breweries</a>

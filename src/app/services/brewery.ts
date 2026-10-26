@@ -28,6 +28,27 @@ export class BreweryService {
     this.breweries.update((list) => [...list, b]);
   }
 
+  // map() builds a new array, so the signal sees a new reference and notifies its readers.
+  updateBrewery(updated: Brewery): void {
+    this.breweries.update((list) => list.map((b) => (b.id === updated.id ? updated : b)));
+  }
+
+  // The id is also dropped from favourites, otherwise favouriteCount would still count it.
+  removeBrewery(id: number): void {
+    this.breweries.update((list) => list.filter((b) => b.id !== id));
+    this.favouriteIds.update((ids) => ids.filter((existing) => existing !== id));
+  }
+
+  // Used by the form when editing. Same lookup as getById, named for that purpose.
+  getBrewery(id: number): Brewery | undefined {
+    return this.getById(id);
+  }
+
+  // There is no server to hand out ids yet, so a new brewery gets one more than the largest id.
+  nextId(): number {
+    return Math.max(0, ...this.breweries().map((b) => b.id)) + 1;
+  }
+
   toggleFavourite(id: number): void {
     this.favouriteIds.update((ids) =>
       ids.includes(id) ? ids.filter((existing) => existing !== id) : [...ids, id],

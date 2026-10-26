@@ -1,0 +1,94 @@
+$accent: #c26a00;
+$accent-dark: #9a5400;
+$panel: #f7f5f2;
+$border: #d6d0c8;
+$text: #333;
+$error: #b00020;
+
+.brewery-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 28rem;
+  margin: 0 auto;
+  padding: 1.5rem 1.75rem;
+  background-color: $panel;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+  text-align: left;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-weight: 600;
+  color: $text;
+}
+
+input[type='text'],
+select {
+  padding: 0.6rem 0.75rem;
+  font: inherit;
+  font-weight: 400;
+  color: $text;
+  background-color: #fff;
+  border: 2px solid $border;
+  border-radius: 8px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+
+  &:focus {
+    outline: none;
+    border-color: $accent;
+    box-shadow: 0 0 0 3px rgba($accent, 0.2);
+  }
+
+  // Angular adds ng-touched and ng-invalid to the control, so the border can match the error message.
+  &.ng-touched.ng-invalid {
+    border-color: $error;
+  }
+}
+
+.checkbox {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.6rem;
+  font-weight: 400;
+  cursor: pointer;
+
+  input {
+    width: 1.15rem;
+    height: 1.15rem;
+    accent-color: $accent;
+    cursor: pointer;
+  }
+}
+
+.error {
+  margin: -0.5rem 0 0;
+  color: $error;
+  font-size: 0.9rem;
+}
+
+button {
+  align-self: flex-start;
+  margin-top: 0.5rem;
+  padding: 0.65rem 1.4rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  background-color: $accent;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.15s;
+
+  &:hover:not(:disabled) {
+    background-color: $accent-dark;
+  }
+
+  &:disabled {
+    background-color: #bdb6ad;
+    cursor: not-allowed;
+  }
+}

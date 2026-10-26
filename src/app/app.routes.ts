@@ -4,6 +4,7 @@ import { BreweryByType } from './brewery-by-type/brewery-by-type';
 import { BreweryDetail } from './brewery-detail/brewery-detail';
 import { Favourites } from './favourites/favourites';
 import { PageNotFound } from './page-not-found/page-not-found';
+import { BreweryForm } from './brewery-form/brewery-form';
 
 // Paths in this array have no leading slash. Links in templates use one, for example routerLink="/breweries".
 export const routes: Routes = [
@@ -18,6 +19,10 @@ export const routes: Routes = [
   { path: 'breweries/type/:type', component: BreweryByType },
   { path: 'breweries/:id', component: BreweryDetail },
   { path: 'favourites', component: Favourites },
+
+  // One component serves both routes. On edit/:id the :id arrives as a signal input, on add it is undefined.
+  { path: 'add', component: BreweryForm },
+  { path: 'edit/:id', component: BreweryForm },
 
   // The wildcard matches anything, so it must be last.
   { path: '**', component: PageNotFound },

@@ -1,0 +1,38 @@
+<h2>{{ isEditMode() ? 'Edit Brewery' : 'Add Brewery' }}</h2>
+
+<form class="brewery-form" [formGroup]="breweryForm" (ngSubmit)="onSubmit()">
+  <label>
+    Name
+    <input type="text" formControlName="name" />
+  </label>
+  <!-- touched waits until the user leaves the field, so the message does not appear while they are still typing. -->
+  @if (breweryForm.controls.name.touched && breweryForm.controls.name.invalid) {
+    <p class="error">Name is required and must be at least 2 characters.</p>
+  }
+
+  <label>
+    City
+    <input type="text" formControlName="city" />
+  </label>
+  @if (breweryForm.controls.city.touched && breweryForm.controls.city.invalid) {
+    <p class="error">City is required.</p>
+  }
+
+  <label>
+    Type
+    <select formControlName="breweryType">
+      <option value="micro">Micro</option>
+      <option value="brewpub">Brewpub</option>
+      <option value="large">Large</option>
+    </select>
+  </label>
+
+  <label class="checkbox">
+    <input type="checkbox" formControlName="hasFoodMenu" />
+    Has a food menu
+  </label>
+
+  <button type="submit" [disabled]="breweryForm.invalid">
+    {{ isEditMode() ? 'Save Changes' : 'Add Brewery' }}
+  </button>
+</form>
