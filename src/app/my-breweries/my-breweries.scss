@@ -1,0 +1,29 @@
+.add-link {
+  display: inline-block;
+  margin-bottom: 1rem;
+  color: #c26a00;
+  font-weight: 600;
+}
+
+.my-brewery {
+  background-color: #f7f5f2;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+
+  h3 {
+    margin: 0 0 0.5rem;
+  }
+
+  p {
+    margin: 0.25rem 0;
+  }
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.75rem;
+}

@@ -1,0 +1,17 @@
+<h2>My Breweries</h2>
+
+<a class="add-link" routerLink="/add">Add a brewery</a>
+
+@for (b of store.breweryList(); track b.id) {
+  <article class="my-brewery">
+    <h3>{{ b.name }}</h3>
+    <p>{{ b.brewery_type }}</p>
+    <p>{{ b.city }}, {{ b.state_province }}, {{ b.country }}</p>
+    <div class="actions">
+      <a [routerLink]="['/edit', b.id]">Edit</a>
+      <button type="button" (click)="store.removeBrewery(b.id)">Delete</button>
+    </div>
+  </article>
+} @empty {
+  <p>You have not added any breweries yet.</p>
+}
