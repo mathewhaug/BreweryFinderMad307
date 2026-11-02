@@ -1,14 +1,25 @@
 <h2>{{ isEditMode() ? 'Edit Brewery' : 'Add Brewery' }}</h2>
 
-<form class="brewery-form" [formGroup]="breweryForm" (ngSubmit)="onSubmit()">
+<form class="brewery-form" [formGroup]="breweryForm"
+      (ngSubmit)="onSubmit()">
   <label>
     Name
-    <input type="text" formControlName="name" />
+    <input type="text"
+           formControlName="name" />
   </label>
   <!-- touched waits until the user leaves the field, so the message does not appear while they are still typing. -->
   @if (breweryForm.controls.name.touched && breweryForm.controls.name.invalid) {
     <p class="error">Name is required and must be at least 2 characters.</p>
   }
+
+  <label>
+    Type
+    <select formControlName="brewery_type">
+      @for (t of types; track t) {
+        <option [value]="t">{{ t }}</option>
+      }
+    </select>
+  </label>
 
   <label>
     City
@@ -19,18 +30,20 @@
   }
 
   <label>
-    Type
-    <select formControlName="breweryType">
-      <option value="micro">Micro</option>
-      <option value="brewpub">Brewpub</option>
-      <option value="large">Large</option>
-    </select>
+    State or province
+    <input type="text" formControlName="state_province" />
   </label>
+  @if (breweryForm.controls.state_province.touched && breweryForm.controls.state_province.invalid) {
+    <p class="error">State or province is required.</p>
+  }
 
-  <label class="checkbox">
-    <input type="checkbox" formControlName="hasFoodMenu" />
-    Has a food menu
+  <label>
+    Country
+    <input type="text" formControlName="country" />
   </label>
+  @if (breweryForm.controls.country.touched && breweryForm.controls.country.invalid) {
+    <p class="error">Country is required.</p>
+  }
 
   <button type="submit" [disabled]="breweryForm.invalid">
     {{ isEditMode() ? 'Save Changes' : 'Add Brewery' }}

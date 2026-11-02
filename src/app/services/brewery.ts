@@ -1,65 +1,60 @@
-import { computed, inject, Service, signal } from '@angular/core';
+import { computed, Service, signal } from '@angular/core';
 import { Brewery } from '../shared/models/brewery';
-import { BREWERY_CONFIG } from '../shared/brewery-config';
 
+// OpenBreweryDB is read only, so this service is now the local "My Breweries" store.
+// It holds the breweries the user creates with the form, plus the ids of favourite API breweries.
 @Service()
 export class BreweryService {
-  private config = inject(BREWERY_CONFIG);
-
+  // Local seeds in the API shape. The ids are plain strings, not API UUIDs,
+  // so these never collide with real OpenBreweryDB breweries.
   private breweries = signal<Brewery[]>([
-    { id: 1, name: 'Walkerville Brewery', city: 'Windsor', breweryType: 'micro', hasFoodMenu: true },
-    { id: 2, name: 'Craft Heads Brewing Co.', city: 'Windsor', breweryType: 'brewpub', hasFoodMenu: false },
-    { id: 3, name: 'Frank Brewing Company', city: 'LaSalle', breweryType: 'large' },
-    { id: 4, name: 'Craft Kitchen & Brewery', city: 'Tecumseh', breweryType: 'brewpub', hasFoodMenu: true },
+    { id: 'local-1', name: 'Walkerville Brewery', brewery_type: 'micro', city: 'Windsor', state_province: 'Ontario', country: 'Canada' },
+    { id: 'local-2', name: 'Craft Heads Brewing Co.', brewery_type: 'brewpub', city: 'Windsor', state_province: 'Ontario', country: 'Canada' },
+    { id: 'local-3', name: 'Frank Brewing Company', brewery_type: 'regional', city: 'LaSalle', state_province: 'Ontario', country: 'Canada' },
+    { id: 'local-4', name: 'Craft Kitchen & Brewery', brewery_type: 'brewpub', city: 'Tecumseh', state_province: 'Ontario', country: 'Canada' },
   ]);
 
   // Because this service is a root singleton, there is one copy for the whole app.
-  // Favourites therefore survive navigating between pages: the Week 5 idea paying off in Week 6.
-  private favouriteIds = signal<readonly number[]>([]);
+  // Favourites therefore survive navigating between pages.
+  // They store API brewery ids only. The pages fetch the full breweries from the API.
+  private favourites = signal<string[]>([]);
 
   breweryList = this.breweries.asReadonly();
   breweryCount = computed(() => this.breweries().length);
-  readonly defaultCity = this.config.defaultCity;
 
-  favourites = computed(() => this.breweries().filter((b) => this.favouriteIds().includes(b.id)));
-  favouriteCount = computed(() => this.favouriteIds().length);
+  favouriteIds = this.favourites.asReadonly();
+  favouriteCount = computed(() => this.favourites().length);
 
-  addBrewery(b: Brewery): void {
-    this.breweries.update((list) => [...list, b]);
+  // There is no server to hand out ids for local breweries, so the browser makes a UUID.
+  addBrewery(b: Omit<Brewery, 'id'>): void {
+    this.breweries.update((list) =>
+      [...list, { ...b, id: crypto.randomUUID() }]);
   }
 
   // map() builds a new array, so the signal sees a new reference and notifies its readers.
   updateBrewery(updated: Brewery): void {
-    this.breweries.update((list) => list.map((b) => (b.id === updated.id ? updated : b)));
+    this.breweries.update((list) =>
+      list.map((b) =>
+        (b.id === updated.id ? updated : b)));
   }
 
-  // The id is also dropped from favourites, otherwise favouriteCount would still count it.
-  removeBrewery(id: number): void {
-    this.breweries.update((list) => list.filter((b) => b.id !== id));
-    this.favouriteIds.update((ids) => ids.filter((existing) => existing !== id));
+  removeBrewery(id: string): void {
+    this.breweries.update((list) =>
+      list.filter((b) => b.id !== id));
   }
 
-  // Used by the form when editing. Same lookup as getById, named for that purpose.
-  getBrewery(id: number): Brewery | undefined {
-    return this.getById(id);
+  // Used by the form when editing.
+  getBrewery(id: string): Brewery | undefined {
+    return this.breweries().find((b) => b.id === id);
   }
 
-  // There is no server to hand out ids yet, so a new brewery gets one more than the largest id.
-  nextId(): number {
-    return Math.max(0, ...this.breweries().map((b) => b.id)) + 1;
-  }
-
-  toggleFavourite(id: number): void {
-    this.favouriteIds.update((ids) =>
+  toggleFavourite(id: string): void {
+    this.favourites.update((ids) =>
       ids.includes(id) ? ids.filter((existing) => existing !== id) : [...ids, id],
     );
   }
 
-  isFavourite(id: number): boolean {
-    return this.favouriteIds().includes(id);
-  }
-
-  getById(id: number): Brewery | undefined {
-    return this.breweries().find((b) => b.id === id);
+  isFavourite(id: string): boolean {
+    return this.favourites().includes(id);
   }
 }

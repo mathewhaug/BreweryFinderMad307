@@ -5,11 +5,15 @@ import { BreweryDetail } from './brewery-detail/brewery-detail';
 import { Favourites } from './favourites/favourites';
 import { PageNotFound } from './page-not-found/page-not-found';
 import { BreweryForm } from './brewery-form/brewery-form';
+import { BrewerySearch } from './brewery-search/brewery-search';
+import { MyBreweries } from './my-breweries/my-breweries';
 
 // Paths in this array have no leading slash. Links in templates use one, for example routerLink="/breweries".
 export const routes: Routes = [
   // pathMatch: 'full' is required for an empty path. Every URL starts with an empty string,
   // so with the default prefix matching this redirect would match every URL.
+
+  ///www.example.com/breweries
   { path: '', redirectTo: '/breweries', pathMatch: 'full' },
   { path: 'breweries', component: BreweryList },
 
@@ -19,6 +23,8 @@ export const routes: Routes = [
   { path: 'breweries/type/:type', component: BreweryByType },
   { path: 'breweries/:id', component: BreweryDetail },
   { path: 'favourites', component: Favourites },
+  { path: 'search', component: BrewerySearch },
+  { path: 'my-breweries', component: MyBreweries },
 
   // One component serves both routes. On edit/:id the :id arrives as a signal input, on add it is undefined.
   { path: 'add', component: BreweryForm },

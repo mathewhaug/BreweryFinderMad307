@@ -2,6 +2,7 @@ import { Component, computed, effect, inject, input } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BreweryService } from '../services/brewery';
+import { BreweryType } from '../shared/models/brewery';
 
 @Component({
   imports: [ReactiveFormsModule],
@@ -18,30 +19,41 @@ export class BreweryForm {
   // On /add there is no :id, so the input stays undefined and the form is in add mode.
   id = input<string>();
 
+  /**
+   *
+   * localhost:4200/add
+   * localhost:4200/edit/:id
+   */
+
   protected isEditMode = computed(() => this.id() !== undefined);
+
+  // Same list as the browse by type page. large and bar are deprecated in the API.
+  protected types: BreweryType[] = ['micro', 'nano', 'regional', 'brewpub', 'contract', 'proprietor'];
 
   // nonNullable means reset() goes back to these starting values instead of null,
   // and getRawValue() is typed without null.
-  protected breweryForm = this.fb.nonNullable.group({
+  protected breweryForm =
+    this.fb.nonNullable.group({
     name: ['', [Validators.required, Validators.minLength(2)]],
+    brewery_type: ['micro' as BreweryType],
     city: ['', Validators.required],
-    breweryType: ['micro'],
-    hasFoodMenu: [false],
+    state_province: ['', Validators.required],
+    country: ['Canada', Validators.required],
   });
 
   constructor() {
-    // An effect reruns when id() changes, so going from /edit/1 to /edit/2
+    // An effect reruns when id() changes, so going from one /edit/:id to another
     // refills the form even though Angular reuses the same component.
     effect(() => {
       const id = this.id();
       if (id === undefined) {
         return;
       }
-      const brewery = this.breweryService.getBrewery(Number(id));
+      const brewery =
+        this.breweryService.getBrewery(id);
       if (brewery) {
-        // patchValue() fills only the fields it is given. The form has no id field,
-        // so the id is ignored here and added back on submit.
-        this.breweryForm.patchValue({ ...brewery, hasFoodMenu: brewery.hasFoodMenu ?? false });
+        // patchValue() fills only the fields the form has. The id is ignored here and added back on submit.
+        this.breweryForm.patchValue(brewery);
       }
     });
   }
@@ -52,16 +64,18 @@ export class BreweryForm {
     }
 
     // getRawValue() includes disabled controls too. value would skip them.
-    const formValue = this.breweryForm.getRawValue();
-    const id = this.isEditMode() ? Number(this.id()) : this.breweryService.nextId();
+    const formValue =
+      this.breweryForm.getRawValue();
+    const id = this.id();
 
-    if (this.isEditMode()) {
+    if (id !== undefined) {
       this.breweryService.updateBrewery({ id, ...formValue });
     } else {
-      this.breweryService.addBrewery({ id, ...formValue });
+      // The store creates the id with crypto.randomUUID().
+      this.breweryService.addBrewery(formValue);
     }
 
     this.breweryForm.reset();
-    this.router.navigate(['/breweries', id]);
+    this.router.navigate(['/my-breweries']);
   }
 }

@@ -58,7 +58,7 @@
   background-color: #7702ff;
 }
 
-.badge-large {
+.badge-regional {
   background-color: #c26a00;
 }
 
@@ -70,4 +70,15 @@
   margin-top: 0.5rem;
   padding-top: 0.5rem;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.location {
+  color: #424242;
+}
+
+.website-link {
+  display: inline-block;
+  margin-top: 0.25rem;
+  color: #c26a00;
+  word-break: break-all;
 }

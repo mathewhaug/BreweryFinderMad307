@@ -1,12 +1,19 @@
-<h2>Breweries</h2>
+<h2>Breweries in {{ city() }}</h2>
 
-@for (brewery of breweryList(); track brewery.id) {
-  <app-brewery-card
-    [brewery]="brewery"
-    [isFavourite]="breweryService.isFavourite(brewery.id)"
-    (opened)="onBreweryOpened($event)"
-    (favouriteToggled)="breweryService.toggleFavourite($event)"
-  />
-} @empty {
-  <p>No breweries to show yet.</p>
+<div class="search-bar">
+  <input #c [value]="city()" (keyup.enter)="city.set(c.value)" aria-label="City" />
+  <button type="button" (click)="city.set(c.value)">Search</button>
+</div>
+
+@if (breweries.isLoading()) {
+  <p>Loading breweries...</p>
+} @else if (breweries.error()) {
+  <p class="error">Could not load breweries. Check your connection.</p>
+  <button type="button" (click)="breweries.reload()">Try again</button>
+} @else {
+  @for (b of breweries.value(); track b.id) {
+    <app-brewery-card [brewery]="b" (opened)="onBreweryOpened($event)" />
+  } @empty {
+    <p>No breweries found in {{ city() }}.</p>
+  }
 }

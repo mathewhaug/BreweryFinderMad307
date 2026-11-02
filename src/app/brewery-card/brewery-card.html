@@ -1,44 +1,52 @@
-<div class="brewery-card" [class.favourite]="isFavourite()" (click)="toggle()">
+<div class="brewery-card" [class.favourite]="store.isFavourite(brewery().id)" (click)="toggle()">
   <div class="card-header">
-    <h3>{{ brewery().name }}</h3>
+    <h3>
+      <!-- The array form builds the URL from segments: ['/breweries', id] becomes /breweries/<uuid>. -->
+      <a [routerLink]="['/breweries', brewery().id]" (click)="$event.stopPropagation()">{{ brewery().name }}</a>
+    </h3>
     <button
       type="button"
       class="favourite-button"
-      [attr.aria-label]="isFavourite() ? 'Remove ' + brewery().name + ' from favourites' : 'Add ' + brewery().name + ' to favourites'"
+      [attr.aria-label]="store.isFavourite(brewery().id) ? 'Remove ' + brewery().name + ' from favourites' : 'Add ' + brewery().name + ' to favourites'"
       (click)="onFavouriteClick($event)"
     >
-      {{ isFavourite() ? '★' : '☆' }}
+      {{ store.isFavourite(brewery().id) ? '★' : '☆' }}
     </button>
   </div>
 
-  @switch (brewery().breweryType) {
+  @switch (brewery().brewery_type) {
     @case ('micro') {
       <span class="badge badge-micro">Micro Brewery</span>
     }
     @case ('brewpub') {
       <span class="badge badge-brewpub">Brewpub</span>
     }
-    @case ('large') {
-      <span class="badge badge-large">Large Brewery</span>
+    @case ('regional') {
+      <span class="badge badge-regional">Regional Brewery</span>
     }
     @default {
-      <span class="badge badge-default">{{ brewery().breweryType }}</span>
+      <span class="badge badge-default">{{ brewery().brewery_type }}</span>
     }
   }
 
-  @if (brewery().hasFoodMenu) {
-    <p>Food menu available</p>
-  } @else {
-    <p>No food menu</p>
+  <!-- There is more than one Windsor. City alone is not enough to tell them apart. -->
+  <p class="location">{{ brewery().city }}, {{ brewery().state_province }}, {{ brewery().country }}</p>
+
+  @if (brewery().website_url) {
+    <a class="website-link" [href]="brewery().website_url" target="_blank" rel="noopener" (click)="$event.stopPropagation()">
+      {{ brewery().website_url }}
+    </a>
   }
 
   @if (expanded) {
     <div class="details">
-      <p>City: {{ brewery().city }}</p>
-      <p>Type: {{ brewery().breweryType }}</p>
+      @if (brewery().street) {
+        <p>Street: {{ brewery().street }}</p>
+      }
+      @if (brewery().phone) {
+        <p>Phone: {{ brewery().phone }}</p>
+      }
+      <p>Type: {{ brewery().brewery_type }}</p>
     </div>
   }
-
-  <!-- The array form builds the URL from segments: ['/breweries', 3] becomes /breweries/3. -->
-  <a class="details-link" [routerLink]="['/breweries', brewery().id]" (click)="$event.stopPropagation()">View details</a>
 </div>

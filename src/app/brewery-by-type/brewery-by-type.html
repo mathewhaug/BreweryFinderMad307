@@ -1,12 +1,29 @@
 <h2 class="heading">{{ type() }} breweries</h2>
 
-@for (brewery of breweries(); track brewery.id) {
-  <app-brewery-card
-    [brewery]="brewery"
-    [isFavourite]="breweryService.isFavourite(brewery.id)"
-    (favouriteToggled)="breweryService.toggleFavourite($event)"
-  />
-} @empty {
-  <p>No {{ type() }} breweries found.</p>
-  <a routerLink="/breweries">See all breweries</a>
+<nav class="type-links">
+  @for (t of types; track t) {
+    <a [routerLink]="['/breweries/type', t]" routerLinkActive="active">{{ t }}</a>
+  }
+</nav>
+
+<!-- status() is one of: idle, loading, reloading, error, resolved, local. -->
+@switch (breweries.status()) {
+  @case ('loading') {
+    <p>Loading {{ type() }} breweries...</p>
+  }
+  @case ('reloading') {
+    <p>Refreshing...</p>
+  }
+  @case ('error') {
+    <p class="error">Could not load {{ type() }} breweries.</p>
+    <button type="button" (click)="breweries.reload()">Try again</button>
+  }
+  @default {
+    @for (brewery of breweries.value(); track brewery.id) {
+      <app-brewery-card [brewery]="brewery" />
+    } @empty {
+      <p>No {{ type() }} breweries found.</p>
+      <a routerLink="/breweries">See all breweries</a>
+    }
+  }
 }

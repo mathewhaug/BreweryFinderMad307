@@ -1,23 +1,24 @@
-import { Component, computed, inject, input } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, inject, input } from '@angular/core';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { BreweryCard } from '../brewery-card/brewery-card';
-import { BreweryService } from '../services/brewery';
+import { BreweryApiService } from '../services/brewery-api.service';
 
 @Component({
-  imports: [BreweryCard, RouterLink],
+  imports: [BreweryCard, RouterLink, RouterLinkActive],
   selector: 'app-brewery-by-type',
   styleUrl: './brewery-by-type.scss',
   templateUrl: './brewery-by-type.html',
 })
 export class BreweryByType {
-  protected breweryService = inject(BreweryService);
+  private api = inject(BreweryApiService);
 
-  // Clicking between Micro, Brewpub, and Large reuses this same component instance.
-  // Only the type input changes, and computed() recalculates the list.
+  // large and bar are deprecated in the API, so they are not offered here.
+  protected types = ['micro', 'nano', 'regional', 'brewpub', 'contract', 'proprietor'];
+
+  // Clicking between types reuses this same component instance.
+  // Only the type input changes, and httpResource sends a new request.
   // That only works because the route parameter arrives as a signal.
   type = input.required<string>();
 
-  protected breweries = computed(() =>
-    this.breweryService.breweryList().filter((b) => b.breweryType === this.type()),
-  );
+  breweries = this.api.byType(this.type);
 }

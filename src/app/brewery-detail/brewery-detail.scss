@@ -17,15 +17,6 @@
   cursor: pointer;
 }
 
-.actions {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-top: 0.75rem;
-}
-
-.delete-button {
-  padding: 0.4rem 0.9rem;
-  font-size: 1rem;
-  cursor: pointer;
+.error {
+  color: #b00020;
 }

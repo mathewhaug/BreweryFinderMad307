@@ -1,7 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Brewery } from '../shared/models/brewery';
 import { BreweryCard } from '../brewery-card/brewery-card';
-import { BreweryService } from '../services/brewery';
+import { BreweryApiService } from '../services/brewery-api.service';
+import { BREWERY_CONFIG } from '../shared/brewery-config';
 
 @Component({
   imports: [BreweryCard],
@@ -10,9 +11,12 @@ import { BreweryService } from '../services/brewery';
   templateUrl: './brewery-list.html',
 })
 export class BreweryList {
-  protected breweryService = inject(BreweryService);
+  private api = inject(BreweryApiService);
 
-  protected breweryList = this.breweryService.breweryList;
+  city = signal(inject(BREWERY_CONFIG).defaultCity);
+
+  // httpResource reruns the request every time city() changes.
+  breweries = this.api.byCity(this.city);
 
   protected onBreweryOpened(brewery: Brewery): void {
     console.log('Brewery opened:', brewery);

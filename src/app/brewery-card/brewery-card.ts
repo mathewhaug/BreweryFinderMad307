@@ -1,6 +1,7 @@
-import { Component, input, output } from '@angular/core';
+import { Component, inject, input, output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Brewery } from '../shared/models/brewery';
+import { BreweryService } from '../services/brewery';
 
 @Component({
   imports: [RouterLink],
@@ -9,10 +10,12 @@ import { Brewery } from '../shared/models/brewery';
   templateUrl: './brewery-card.html',
 })
 export class BreweryCard {
+  // The card talks to the favourites store directly, so every page that shows cards
+  // gets a working favourite toggle without wiring an output.
+  protected store = inject(BreweryService);
+
   brewery = input.required<Brewery>();
-  isFavourite = input(false);
   opened = output<Brewery>();
-  favouriteToggled = output<number>();
 
   protected expanded = false;
 
@@ -25,6 +28,6 @@ export class BreweryCard {
     // Without stopPropagation(), this click would bubble up and
     // run the card's own click handler too, expanding the card.
     event.stopPropagation();
-    this.favouriteToggled.emit(this.brewery().id);
+    this.store.toggleFavourite(this.brewery().id);
   }
 }
