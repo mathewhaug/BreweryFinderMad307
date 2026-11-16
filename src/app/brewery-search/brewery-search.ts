@@ -1,13 +1,14 @@
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BreweryCard } from '../brewery-card/brewery-card';
+import { AutoFocus } from '../directives/auto-focus';
 import { BreweryApiService } from '../services/brewery-api.service';
 import { Brewery } from '../shared/models/brewery';
 
 // This page uses HttpClient and an Observable on purpose, to compare with httpResource.
 // Here we manage loading, error, and results ourselves.
 @Component({
-  imports: [BreweryCard],
+  imports: [BreweryCard, AutoFocus],
   selector: 'app-brewery-search',
   styleUrl: './brewery-search.scss',
   templateUrl: './brewery-search.html',
@@ -35,6 +36,7 @@ export class BrewerySearch {
     this.api.search(query)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
+        /*    |----------| |----------| */
       next: (breweries) => {
         this.results.set(breweries);
         this.loading.set(false);

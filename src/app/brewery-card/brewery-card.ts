@@ -1,10 +1,17 @@
 import { Component, inject, input, output } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { ExternalLink } from '../directives/external-link';
+import { Highlight } from '../directives/highlight';
 import { Brewery } from '../shared/models/brewery';
 import { BreweryService } from '../services/brewery';
 
 @Component({
-  imports: [RouterLink],
+  imports: [RouterLink, ExternalLink],
+  // hostDirectives applies Highlight to <app-brewery-card> itself, as if the user had written appHighlight on it.
+  // The input is renamed for the outside world: parents pass highlightColour, Highlight receives appHighlight.
+  hostDirectives: [
+    { directive: Highlight, inputs: ['appHighlight: highlightColour'] },
+  ],
   selector: 'app-brewery-card',
   styleUrl: './brewery-card.scss',
   templateUrl: './brewery-card.html',

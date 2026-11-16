@@ -1,7 +1,7 @@
 <h2>Search breweries</h2>
 
 <div class="search-bar">
-  <input #term placeholder="Name, city, or keyword" aria-label="Search term" (keyup.enter)="runSearch(term.value)" />
+  <input #term appAutoFocus placeholder="Name, city, or keyword" aria-label="Search term" (keyup.enter)="runSearch(term.value)" />
   <button type="button" (click)="runSearch(term.value)">Search</button>
 </div>
 

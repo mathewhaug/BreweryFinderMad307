@@ -1,11 +1,12 @@
 import { Component, computed, effect, inject, input } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AutoFocus } from '../directives/auto-focus';
 import { BreweryService } from '../services/brewery';
 import { BreweryType } from '../shared/models/brewery';
 
 @Component({
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, AutoFocus],
   selector: 'app-brewery-form',
   styleUrl: './brewery-form.scss',
   templateUrl: './brewery-form.html',

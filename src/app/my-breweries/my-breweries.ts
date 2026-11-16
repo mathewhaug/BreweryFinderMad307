@@ -1,11 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { BreweryService } from '../services/brewery';
+import { Highlight } from '../directives/highlight';
 
 // Breweries created with the form live only in the browser, because OpenBreweryDB is read only.
 // They are not linked to /breweries/:id, which is for API ids.
 @Component({
-  imports: [RouterLink],
+  imports: [RouterLink, Highlight],
   selector: 'app-my-breweries',
   styleUrl: './my-breweries.scss',
   templateUrl: './my-breweries.html',

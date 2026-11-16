@@ -12,7 +12,7 @@
   <button type="button" (click)="breweries.reload()">Try again</button>
 } @else {
   @for (b of breweries.value(); track b.id) {
-    <app-brewery-card [brewery]="b" (opened)="onBreweryOpened($event)" />
+    <app-brewery-card [brewery]="b" highlightColour="#FDE7C8" (opened)="onBreweryOpened($event)" />
   } @empty {
     <p>No breweries found in {{ city() }}.</p>
   }

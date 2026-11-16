@@ -20,13 +20,33 @@
       <p>Phone: {{ b.phone }}</p>
     }
     @if (b.website_url) {
-      <p><a [href]="b.website_url" target="_blank" rel="noopener">{{ b.website_url }}</a></p>
+      <p><a [href]="b.website_url" appExternalLink>{{ b.website_url }}</a></p>
     }
 
-    <button type="button" class="favourite-button" (click)="store.toggleFavourite(b.id)">
-      {{ store.isFavourite(b.id) ? '★ Remove from favourites' : '☆ Add to favourites' }}
+    <!-- appCopy is an input and (copied) is the directive's output, both on the same button. -->
+    <button type="button" [appCopy]="address()" (copied)="copiedText.set($event)">Copy address</button>
+    @if (copiedText()) { <span>Copied!</span> }
+
+    <!-- *appUnless is our own structural directive: the button exists only while this is not a favourite. -->
+    <button *appUnless="store.isFavourite(brewery.value().id)" type="button" class="favourite-button" (click)="store.toggleFavourite(brewery.value().id)">
+      ☆ Add to favourites
     </button>
+    @if (store.isFavourite(b.id)) {
+      <button type="button" class="favourite-button" (click)="store.toggleFavourite(b.id)">★ Remove from favourites</button>
+    }
   </article>
 
   <a routerLink="/breweries">Back to all breweries</a>
+
+  <!-- on viewport: load when the placeholder scrolls into view.
+       prefetch on idle: download the chunk early, as soon as the browser is idle. -->
+  @defer (on viewport; prefetch on idle) {
+    <app-nearby-breweries [city]="brewery.value().city" [excludeId]="id()" />
+  } @placeholder (minimum 500ms) {
+    <p>Nearby breweries</p>
+  } @loading (after 100ms; minimum 1s) {
+    <p>Loading nearby breweries...</p>
+  } @error {
+    <p>Could not load this section.</p>
+  }
 }

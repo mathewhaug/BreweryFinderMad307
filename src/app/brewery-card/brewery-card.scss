@@ -1,9 +1,17 @@
-.brewery-card {
+// A component's host element is inline by default. Making it a block lets the
+// Highlight background from hostDirectives cover the whole card.
+// The card's resting colour lives here too, so Highlight's inline background replaces it on hover.
+:host {
+  display: block;
   background-color: #f7f5f2;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.brewery-card {
   border-radius: 8px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
   padding: 1rem 1.25rem;
-  margin-bottom: 1rem;
   cursor: pointer;
 
   h3 {

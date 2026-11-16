@@ -33,7 +33,7 @@
   <p class="location">{{ brewery().city }}, {{ brewery().state_province }}, {{ brewery().country }}</p>
 
   @if (brewery().website_url) {
-    <a class="website-link" [href]="brewery().website_url" target="_blank" rel="noopener" (click)="$event.stopPropagation()">
+    <a class="website-link" [href]="brewery().website_url" appExternalLink (click)="$event.stopPropagation()">
       {{ brewery().website_url }}
     </a>
   }
