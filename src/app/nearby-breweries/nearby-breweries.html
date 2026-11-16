@@ -1,0 +1,18 @@
+<section class="nearby">
+  <h3>Nearby breweries</h3>
+
+  @if (breweries.isLoading()) {
+    <p>Loading breweries in {{ city() }}...</p>
+  } @else {
+    <ul>
+      @for (b of nearby(); track b.id) {
+        <li>
+          <a [routerLink]="['/breweries', b.id]">{{ b.name }}</a>
+          {{ b.brewery_type }}
+        </li>
+      } @empty {
+        <li>No other breweries found in {{ city() }}.</li>
+      }
+    </ul>
+  }
+</section>
