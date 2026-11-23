@@ -1,52 +1,57 @@
-<div class="brewery-card" [class.favourite]="store.isFavourite(brewery().id)" (click)="toggle()">
-  <div class="card-header">
-    <h3>
-      <!-- The array form builds the URL from segments: ['/breweries', id] becomes /breweries/<uuid>. -->
-      <a [routerLink]="['/breweries', brewery().id]" (click)="$event.stopPropagation()">{{ brewery().name }}</a>
-    </h3>
+<mat-card appearance="outlined" class="brewery-card" [class.favourite]="store.isFavourite(brewery().id)" (click)="toggle()">
+  <mat-card-header>
+    <mat-card-title>{{ brewery().name }}</mat-card-title>
+    <!-- There is more than one Windsor. City alone is not enough to tell them apart. -->
+    <mat-card-subtitle>{{ brewery().city }}, {{ brewery().state_province }}, {{ brewery().country }}</mat-card-subtitle>
     <button
+      matIconButton
       type="button"
       class="favourite-button"
       [attr.aria-label]="store.isFavourite(brewery().id) ? 'Remove ' + brewery().name + ' from favourites' : 'Add ' + brewery().name + ' to favourites'"
       (click)="onFavouriteClick($event)"
     >
-      {{ store.isFavourite(brewery().id) ? '★' : '☆' }}
+      <!-- Material Symbols draws the same icon outlined or filled. The filled class switches the FILL axis on. -->
+      <mat-icon [class.filled]="store.isFavourite(brewery().id)">favorite</mat-icon>
     </button>
-  </div>
+  </mat-card-header>
 
-  @switch (brewery().brewery_type) {
-    @case ('micro') {
-      <span class="badge badge-micro">Micro Brewery</span>
-    }
-    @case ('brewpub') {
-      <span class="badge badge-brewpub">Brewpub</span>
-    }
-    @case ('regional') {
-      <span class="badge badge-regional">Regional Brewery</span>
-    }
-    @default {
-      <span class="badge badge-default">{{ brewery().brewery_type }}</span>
-    }
-  }
-
-  <!-- There is more than one Windsor. City alone is not enough to tell them apart. -->
-  <p class="location">{{ brewery().city }}, {{ brewery().state_province }}, {{ brewery().country }}</p>
-
-  @if (brewery().website_url) {
-    <a class="website-link" [href]="brewery().website_url" appExternalLink (click)="$event.stopPropagation()">
-      {{ brewery().website_url }}
-    </a>
-  }
-
-  @if (expanded) {
-    <div class="details">
-      @if (brewery().street) {
-        <p>Street: {{ brewery().street }}</p>
+  <mat-card-content>
+    @switch (brewery().brewery_type) {
+      @case ('micro') {
+        <span class="badge badge-micro">{{ brewery().brewery_type | breweryType }}</span>
       }
-      @if (brewery().phone) {
-        <p>Phone: {{ brewery().phone }}</p>
+      @case ('brewpub') {
+        <span class="badge badge-brewpub">{{ brewery().brewery_type | breweryType }}</span>
       }
-      <p>Type: {{ brewery().brewery_type }}</p>
-    </div>
-  }
-</div>
+      @case ('regional') {
+        <span class="badge badge-regional">{{ brewery().brewery_type | breweryType }}</span>
+      }
+      @default {
+        <span class="badge badge-default">{{ brewery().brewery_type | breweryType }}</span>
+      }
+    }
+
+    @if (brewery().website_url) {
+      <a class="website-link" [href]="brewery().website_url" appExternalLink (click)="$event.stopPropagation()">
+        {{ brewery().website_url }}
+      </a>
+    }
+
+    @if (expanded) {
+      <div class="details">
+        @if (brewery().street) {
+          <p>Street: {{ brewery().street }}</p>
+        }
+        @if (brewery().phone) {
+          <p>Phone: {{ brewery().phone }}</p>
+        }
+        <p>Type: {{ brewery().brewery_type | breweryType }}</p>
+      </div>
+    }
+  </mat-card-content>
+
+  <mat-card-actions>
+    <!-- The array form builds the URL from segments: ['/breweries', id] becomes /breweries/<uuid>. -->
+    <a matButton [routerLink]="['/breweries', brewery().id]" (click)="$event.stopPropagation()">Details</a>
+  </mat-card-actions>
+</mat-card>

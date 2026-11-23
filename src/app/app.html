@@ -1,19 +1,40 @@
-<div class="container">
-  <h1>{{ title }}</h1>
+<mat-sidenav-container class="app-shell">
+  <!-- mode="over" slides the drawer over the page with a backdrop. Clicking a link closes it. -->
+  <mat-sidenav #drawer mode="over">
+    <mat-nav-list (click)="drawer.close()">
+      @for (link of links(); track link.path) {
+        <a mat-list-item
+           [routerLink]="link.path"
+           routerLinkActive="active"
+           #rla="routerLinkActive"
+           [routerLinkActiveOptions]="{ exact: link.exact }"
+           [activated]="rla.isActive">{{ link.label }}</a>
+      }
+    </mat-nav-list>
+  </mat-sidenav>
 
-  <nav class="nav-bar">
-    <!-- exact: true stops "All breweries" from also being highlighted on /breweries/type/micro.
-         By default, routerLinkActive matches by prefix. -->
-    <a routerLink="/breweries" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">All breweries</a>
-    <a routerLink="/breweries/type/micro" routerLinkActive="active">Micro</a>
-    <a routerLink="/breweries/type/brewpub" routerLinkActive="active">Brewpub</a>
-    <a routerLink="/search" routerLinkActive="active">Search</a>
-    <a routerLink="/favourites" routerLinkActive="active">Favourites ({{ favouriteCount() }})</a>
-    <a routerLink="/my-breweries" routerLinkActive="active">My Breweries</a>
-    <a routerLink="/add" routerLinkActive="active">Add brewery</a>
-  </nav>
+  <mat-sidenav-content>
+    <mat-toolbar>
+      @if (isHandset()) {
+        <button matIconButton type="button" aria-label="Open menu" (click)="drawer.toggle()">
+          <mat-icon>menu</mat-icon>
+        </button>
+      }
+      <span>{{ title }}</span>
+      <span class="spacer"></span>
+      @if (!isHandset()) {
+        @for (link of links(); track link.path) {
+          <a matButton
+             [routerLink]="link.path"
+             routerLinkActive="active"
+             [routerLinkActiveOptions]="{ exact: link.exact }">{{ link.label }}</a>
+        }
+      }
+    </mat-toolbar>
 
-  <!-- The page for the matched route is displayed here. -->
-  <router-outlet />
-
-</div>
+    <!-- The page for the matched route is displayed here. -->
+    <main class="container">
+      <router-outlet />
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>

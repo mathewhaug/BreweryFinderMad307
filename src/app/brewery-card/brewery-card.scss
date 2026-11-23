@@ -3,90 +3,71 @@
 // The card's resting colour lives here too, so Highlight's inline background replaces it on hover.
 :host {
   display: block;
-  background-color: #f7f5f2;
-  border-radius: 8px;
+  background-color: var(--mat-sys-surface);
+  border-radius: 12px;
   margin-bottom: 1rem;
 }
 
 .brewery-card {
-  border-radius: 8px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
-  padding: 1rem 1.25rem;
+  // Let the host background (and the Highlight colour) show through the card.
+  --mat-card-outlined-container-color: transparent;
   cursor: pointer;
-
-  h3 {
-    margin: 0 0 0.5rem;
-  }
-
-  p {
-    margin: 0.25rem 0;
-  }
 
   &.favourite {
-    border-left: 4px solid #f2b705;
+    border-left: 4px solid var(--mat-sys-primary);
   }
 }
 
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-}
-
+// mat-card-header is a flex row, so auto margin pushes the button to the right edge.
 .favourite-button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 1.5rem;
-  line-height: 1;
-  color: #f2b705;
+  margin-left: auto;
+  color: var(--mat-sys-primary);
 }
 
-.details-link {
-  display: inline-block;
-  margin-top: 0.5rem;
-  color: #c26a00;
-  font-weight: 600;
+.filled {
+  font-variation-settings: 'FILL' 1;
 }
 
 .badge {
   display: inline-block;
   padding: 0.2rem 0.6rem;
   border-radius: 999px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: #fff;
+  font: var(--mat-sys-label-medium);
 }
 
 .badge-micro {
-  background-color: #2e7d32;
+  background-color: var(--mat-sys-primary-container);
+  color: var(--mat-sys-on-primary-container);
 }
 
 .badge-brewpub {
-  background-color: #7702ff;
+  background-color: var(--mat-sys-tertiary-container);
+  color: var(--mat-sys-on-tertiary-container);
 }
 
 .badge-regional {
-  background-color: #c26a00;
+  background-color: var(--mat-sys-secondary-container);
+  color: var(--mat-sys-on-secondary-container);
 }
 
 .badge-default {
-  background-color: #616161;
+  background-color: var(--mat-sys-surface-variant);
+  color: var(--mat-sys-on-surface-variant);
 }
 
 .details {
   margin-top: 0.5rem;
   padding-top: 0.5rem;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
-}
+  border-top: 1px solid var(--mat-sys-outline-variant);
 
-.location {
-  color: #424242;
+  p {
+    margin: 0.25rem 0;
+  }
 }
 
 .website-link {
-  display: inline-block;
-  margin-top: 0.25rem;
-  color: #c26a00;
+  display: block;
+  margin-top: 0.5rem;
+  color: var(--mat-sys-primary);
   word-break: break-all;
 }

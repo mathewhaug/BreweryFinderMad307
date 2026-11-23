@@ -2,7 +2,7 @@
   <h3>Nearby breweries</h3>
 
   @if (breweries.isLoading()) {
-    <p>Loading breweries in {{ city() }}...</p>
+    <mat-progress-bar mode="indeterminate" />
   } @else {
     <ul>
       @for (b of nearby(); track b.id) {

@@ -1,19 +1,32 @@
-<h2>Breweries in {{ city() }}</h2>
+<h2>{{ total() | number }} breweries in {{ city() }}</h2>
 
 <div class="search-bar">
-  <input #c [value]="city()" (keyup.enter)="city.set(c.value)" aria-label="City" />
-  <button type="button" (click)="city.set(c.value)">Search</button>
+  <mat-form-field appearance="outline" subscriptSizing="dynamic">
+    <mat-label>City</mat-label>
+    <input matInput #c [value]="city()" (keyup.enter)="search(c.value)" />
+  </mat-form-field>
+  <button matButton="filled" type="button" (click)="search(c.value)">Search</button>
 </div>
 
 @if (breweries.isLoading()) {
-  <p>Loading breweries...</p>
+  <mat-progress-bar mode="indeterminate" />
 } @else if (breweries.error()) {
   <p class="error">Could not load breweries. Check your connection.</p>
-  <button type="button" (click)="breweries.reload()">Try again</button>
+  <button matButton="outlined" type="button" (click)="breweries.reload()">Try again</button>
 } @else {
   @for (b of breweries.value(); track b.id) {
-    <app-brewery-card [brewery]="b" highlightColour="#FDE7C8" (opened)="onBreweryOpened($event)" />
+    <app-brewery-card [brewery]="b" highlightColour="var(--mat-sys-surface-container-high)" (opened)="onBreweryOpened($event)" />
   } @empty {
     <p>No breweries found in {{ city() }}.</p>
   }
 }
+
+<!-- Outside the @if, so the paginator stays put while the next page loads. -->
+<mat-paginator
+  [length]="total()"
+  [pageIndex]="pageIndex()"
+  [pageSize]="pageSize()"
+  [pageSizeOptions]="[10, 20, 50]"
+  [showFirstLastButtons]="true"
+  (page)="onPage($event)"
+  aria-label="Select page of breweries" />

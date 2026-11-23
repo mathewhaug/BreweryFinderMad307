@@ -1,34 +1,29 @@
+// The container fills the viewport, so the sidenav backdrop covers the whole page.
+.app-shell {
+  height: 100dvh;
+}
+
+mat-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  gap: 0.25rem;
+  background-color: var(--mat-sys-primary-container);
+  color: var(--mat-sys-on-primary-container);
+}
+
+// Pushes the links to the right edge of the toolbar.
+.spacer {
+  flex: 1 1 auto;
+}
+
+mat-toolbar a.active {
+  background-color: var(--mat-sys-secondary-container);
+  color: var(--mat-sys-on-secondary-container);
+}
+
 .container {
   max-width: 720px;
   margin: 2rem auto;
   padding: 0 1rem;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  text-align: center;
-}
-
-.nav-bar {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.5rem;
-  margin-bottom: 1.5rem;
-
-  a {
-    padding: 0.5rem 1rem;
-    border-radius: 6px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #333;
-    text-decoration: none;
-    border: 2px solid transparent;
-
-    &:hover {
-      border-color: #c26a00;
-    }
-
-    &.active {
-      background-color: #c26a00;
-      color: #fff;
-    }
-  }
 }

@@ -1,7 +1,7 @@
 .detail {
-  background-color: #f7f5f2;
-  border-radius: 8px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+  background-color: var(--mat-sys-surface-container);
+  color: var(--mat-sys-on-surface);
+  border-radius: 12px;
   padding: 1rem 1.25rem;
   margin-bottom: 1rem;
 
@@ -10,13 +10,17 @@
   }
 }
 
-.favourite-button {
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
   margin-top: 0.75rem;
-  padding: 0.4rem 0.9rem;
-  font-size: 1rem;
-  cursor: pointer;
+}
+
+.filled {
+  font-variation-settings: 'FILL' 1;
 }
 
 .error {
-  color: #b00020;
+  color: var(--mat-sys-error);
 }

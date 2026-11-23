@@ -9,14 +9,14 @@
 <!-- status() is one of: idle, loading, reloading, error, resolved, local. -->
 @switch (breweries.status()) {
   @case ('loading') {
-    <p>Loading {{ type() }} breweries...</p>
+    <mat-progress-bar mode="indeterminate" />
   }
   @case ('reloading') {
-    <p>Refreshing...</p>
+    <mat-progress-bar mode="indeterminate" />
   }
   @case ('error') {
     <p class="error">Could not load {{ type() }} breweries.</p>
-    <button type="button" (click)="breweries.reload()">Try again</button>
+    <button matButton="outlined" type="button" (click)="breweries.reload()">Try again</button>
   }
   @default {
     @for (brewery of breweries.value(); track brewery.id) {

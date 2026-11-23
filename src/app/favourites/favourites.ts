@@ -1,11 +1,13 @@
 import { Component, inject } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { RouterLink } from '@angular/router';
 import { BreweryCard } from '../brewery-card/brewery-card';
 import { BreweryApiService } from '../services/brewery-api.service';
 import { BreweryService } from '../services/brewery';
 
 @Component({
-  imports: [BreweryCard, RouterLink],
+  imports: [BreweryCard, RouterLink, MatButtonModule, MatProgressBarModule],
   selector: 'app-favourites',
   styleUrl: './favourites.scss',
   templateUrl: './favourites.html',

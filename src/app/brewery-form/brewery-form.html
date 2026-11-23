@@ -1,51 +1,57 @@
 <h2>{{ isEditMode() ? 'Edit Brewery' : 'Add Brewery' }}</h2>
 
+<!-- mat-error only shows once the control is touched and invalid, so there is no touched && invalid check here.
+     The @if blocks only choose which message to show. -->
 <form class="brewery-form" [formGroup]="breweryForm"
       (ngSubmit)="onSubmit()">
-  <label>
-    Name
-    <input type="text" appAutoFocus
-           formControlName="name" />
-  </label>
-  <!-- touched waits until the user leaves the field, so the message does not appear while they are still typing. -->
-  @if (breweryForm.controls.name.touched && breweryForm.controls.name.invalid) {
-    <p class="error">Name is required and must be at least 2 characters.</p>
-  }
+  <mat-form-field appearance="outline">
+    <mat-label>Brewery name</mat-label>
+    <input matInput appAutoFocus formControlName="name" />
+    <mat-hint>As it appears on the sign</mat-hint>
+    @if (breweryForm.controls.name.hasError('required')) {
+      <mat-error>A name is required</mat-error>
+    } @else if (breweryForm.controls.name.hasError('minlength')) {
+      <mat-error>At least 2 characters</mat-error>
+    }
+  </mat-form-field>
 
-  <label>
-    Type
-    <select formControlName="brewery_type">
+  <mat-form-field appearance="outline">
+    <mat-label>Type</mat-label>
+    <mat-select formControlName="brewery_type">
       @for (t of types; track t) {
-        <option [value]="t">{{ t }}</option>
+        <mat-option [value]="t">{{ t | breweryType }}</mat-option>
       }
-    </select>
-  </label>
+    </mat-select>
+  </mat-form-field>
 
-  <label>
-    City
-    <input type="text" formControlName="city" />
-  </label>
-  @if (breweryForm.controls.city.touched && breweryForm.controls.city.invalid) {
-    <p class="error">City is required.</p>
-  }
+  <mat-form-field appearance="outline">
+    <mat-label>City</mat-label>
+    <input matInput formControlName="city" />
+    @if (breweryForm.controls.city.hasError('required')) {
+      <mat-error>A city is required</mat-error>
+    }
+  </mat-form-field>
 
-  <label>
-    State or province
-    <input type="text" formControlName="state_province" />
-  </label>
-  @if (breweryForm.controls.state_province.touched && breweryForm.controls.state_province.invalid) {
-    <p class="error">State or province is required.</p>
-  }
+  <mat-form-field appearance="outline">
+    <mat-label>State or province</mat-label>
+    <input matInput formControlName="state_province" />
+    @if (breweryForm.controls.state_province.hasError('required')) {
+      <mat-error>A state or province is required</mat-error>
+    }
+  </mat-form-field>
 
-  <label>
-    Country
-    <input type="text" formControlName="country" />
-  </label>
-  @if (breweryForm.controls.country.touched && breweryForm.controls.country.invalid) {
-    <p class="error">Country is required.</p>
-  }
+  <mat-form-field appearance="outline">
+    <mat-label>Country</mat-label>
+    <input matInput formControlName="country" />
+    @if (breweryForm.controls.country.hasError('required')) {
+      <mat-error>A country is required</mat-error>
+    }
+  </mat-form-field>
 
-  <button type="submit" [disabled]="breweryForm.invalid">
-    {{ isEditMode() ? 'Save Changes' : 'Add Brewery' }}
-  </button>
+  <div class="actions">
+    <button matButton="filled" type="submit" [disabled]="breweryForm.invalid">
+      {{ isEditMode() ? 'Save Changes' : 'Add Brewery' }}
+    </button>
+    <a matButton="outlined" routerLink="/my-breweries">Cancel</a>
+  </div>
 </form>

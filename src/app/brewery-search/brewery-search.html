@@ -1,12 +1,15 @@
 <h2>Search breweries</h2>
 
 <div class="search-bar">
-  <input #term appAutoFocus placeholder="Name, city, or keyword" aria-label="Search term" (keyup.enter)="runSearch(term.value)" />
-  <button type="button" (click)="runSearch(term.value)">Search</button>
+  <mat-form-field appearance="outline" subscriptSizing="dynamic">
+    <mat-label>Search term</mat-label>
+    <input matInput #term appAutoFocus placeholder="Name, city, or keyword" (keyup.enter)="runSearch(term.value)" />
+  </mat-form-field>
+  <button matButton="filled" type="button" (click)="runSearch(term.value)">Search</button>
 </div>
 
 @if (loading()) {
-  <p>Searching...</p>
+  <mat-progress-bar mode="indeterminate" />
 } @else if (error()) {
   <p class="error">{{ error() }}</p>
 } @else {

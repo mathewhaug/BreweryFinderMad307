@@ -36,6 +36,25 @@ export class BreweryApiService {
     }, { defaultValue: [] });
   }
 
+  // One page of breweries. The API counts pages from 1, the paginator from 0, hence the + 1.
+  byCityPaged(city: Signal<string>, pageIndex: Signal<number>, pageSize: Signal<number>) {
+    return httpResource<Brewery[]>(() => {
+      const value = city().trim();
+      return value
+        ? { url: this.url, params: { by_city: value, page: pageIndex() + 1, per_page: pageSize() } }
+        : undefined;
+    }, { defaultValue: [] });
+  }
+
+  // The meta endpoint returns the total count for a filter, so the paginator knows how many pages there are.
+  // The API sends total as a string.
+  metaByCity(city: Signal<string>) {
+    return httpResource<{ total: string }>(() => {
+      const value = city().trim();
+      return value ? { url: `${this.url}/meta`, params: { by_city: value } } : undefined;
+    });
+  }
+
   byType(type: Signal<string>) {
     return httpResource<Brewery[]>(() => ({
       url: this.url,

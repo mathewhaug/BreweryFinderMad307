@@ -1,10 +1,12 @@
 import { Component, inject, input } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { BreweryCard } from '../brewery-card/brewery-card';
 import { BreweryApiService } from '../services/brewery-api.service';
 
 @Component({
-  imports: [BreweryCard, RouterLink, RouterLinkActive],
+  imports: [BreweryCard, RouterLink, RouterLinkActive, MatButtonModule, MatProgressBarModule],
   selector: 'app-brewery-by-type',
   styleUrl: './brewery-by-type.scss',
   templateUrl: './brewery-by-type.html',

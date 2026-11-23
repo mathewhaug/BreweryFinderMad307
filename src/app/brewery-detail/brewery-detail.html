@@ -1,16 +1,16 @@
 @if (brewery.isLoading()) {
-  <p>Loading brewery...</p>
+  <mat-progress-bar mode="indeterminate" />
 } @else if (brewery.error()) {
   <!-- This is not the 404 page. The URL matched a route, breweries/:id,
        but the API could not return a brewery for that id. -->
   <p class="error">Could not load brewery {{ id() }}.</p>
-  <button type="button" (click)="brewery.reload()">Try again</button>
+  <button matButton="outlined" type="button" (click)="brewery.reload()">Try again</button>
   <a routerLink="/breweries">Back to all breweries</a>
 } @else if (brewery.hasValue()) {
   @let b = brewery.value();
   <article class="detail">
     <h2>{{ b.name }}</h2>
-    <p>Type: {{ b.brewery_type }}</p>
+    <p>Type: {{ b.brewery_type | breweryType }}</p>
     @if (b.street) {
       <p>Street: {{ b.street }}</p>
     }
@@ -23,17 +23,26 @@
       <p><a [href]="b.website_url" appExternalLink>{{ b.website_url }}</a></p>
     }
 
-    <!-- appCopy is an input and (copied) is the directive's output, both on the same button. -->
-    <button type="button" [appCopy]="address()" (copied)="copiedText.set($event)">Copy address</button>
-    @if (copiedText()) { <span>Copied!</span> }
+    <div class="actions">
+      <!-- appCopy is an input and (copied) is the directive's output, both on the same button.
+           The output now opens a snack bar instead of showing a Copied! message. -->
+      <button matButton="outlined" type="button" [appCopy]="address()" (copied)="onCopied()">
+        <mat-icon>content_copy</mat-icon>
+        Copy address
+      </button>
 
-    <!-- *appUnless is our own structural directive: the button exists only while this is not a favourite. -->
-    <button *appUnless="store.isFavourite(brewery.value().id)" type="button" class="favourite-button" (click)="store.toggleFavourite(brewery.value().id)">
-      ☆ Add to favourites
-    </button>
-    @if (store.isFavourite(b.id)) {
-      <button type="button" class="favourite-button" (click)="store.toggleFavourite(b.id)">★ Remove from favourites</button>
-    }
+      <!-- *appUnless is our own structural directive: the button exists only while this is not a favourite. -->
+      <button matButton="outlined" *appUnless="store.isFavourite(brewery.value().id)" type="button" (click)="store.toggleFavourite(brewery.value().id)">
+        <mat-icon>favorite</mat-icon>
+        Add to favourites
+      </button>
+      @if (store.isFavourite(b.id)) {
+        <button matButton="filled" type="button" (click)="store.toggleFavourite(b.id)">
+          <mat-icon class="filled">favorite</mat-icon>
+          Remove from favourites
+        </button>
+      }
+    </div>
   </article>
 
   <a routerLink="/breweries">Back to all breweries</a>
@@ -45,7 +54,7 @@
   } @placeholder (minimum 500ms) {
     <p>Nearby breweries</p>
   } @loading (after 100ms; minimum 1s) {
-    <p>Loading nearby breweries...</p>
+    <mat-progress-bar mode="indeterminate" />
   } @error {
     <p>Could not load this section.</p>
   }

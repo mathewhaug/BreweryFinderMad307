@@ -1,10 +1,11 @@
 import { Component, computed, inject, input } from '@angular/core';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { RouterLink } from '@angular/router';
 import { BreweryApiService } from '../services/brewery-api.service';
 
 // Loaded on demand by the @defer block on the brewery detail page.
 @Component({
-  imports: [RouterLink],
+  imports: [RouterLink, MatProgressBarModule],
   selector: 'app-nearby-breweries',
   styleUrl: './nearby-breweries.scss',
   templateUrl: './nearby-breweries.html',
